@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard - Shreeji E-Bike</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo" style="gap:0.75rem;">
+        <img src="logo.png" alt="Logo" class="logo-icon">
+        <div>
+          <h1 style="font-size:1.4rem; color:#fff; margin:0;">Shreeji E-Bike - Owner</h1>
+          <p class="tagline" style="margin:0; font-size:0.9rem;">Live Bookings Dashboard</p>
+        </div>
+      </div>
+
+      <!-- changed: stacked toolbar for mobile friendliness -->
+      <div class="dashboard-toolbar" style="margin-top:1rem; display:flex; gap:1rem; align-items:center; justify-content:center;">
+        <div id="ownerEmail" style="color:rgba(255,255,255,0.95); align-self:center; font-weight:600;"></div>
+        <button id="logoutBtn" class="book-again-btn" style="border-color:white; color:white; min-width:120px;">Logout</button>
+      </div>
+    </header>
+
+    <main style="padding:2rem 1rem; z-index:1; position:relative;">
+      <div class="booking-card" style="max-width:1000px; margin:0 auto;">
+        <div class="card-header">
+          <h2>Ride Bookings</h2>
+          <p>Live updates appear below. New bookings show in real-time.</p>
+        </div>
+
+        <div style="overflow:auto;">
+          <table id="bookingsTable" class="bookings-table" style="width:100%; border-collapse:collapse;">
+            <thead>
+              <tr>
+                <th style="width:40px">#</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- rows injected here -->
+            </tbody>
+          </table>
+        </div>
+
+        <p id="emptyMessage" style="text-align:center; color:#666; margin-top:1rem; display:none;">
+          No bookings yet.
+        </p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; 2025 Shreeji E-Bike World</p>
+    </footer>
+  </div>
+
+  <script type="module">
+    // Firebase dashboard script (runs after DOM created)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUNQ46OKgx75Qu7h7fnQsiWXxobtYZE5A",
+      authDomain: "ride-tool.firebaseapp.com",
+      projectId: "ride-tool",
+      storageBucket: "ride-tool.firebasestorage.app",
+      messagingSenderId: "974218110192",
+      appId: "1:974218110192:web:c793fa2ba7323f21f14e35",
+      measurementId: "G-6H9E866HL8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const tableBody = document.querySelector('#bookingsTable tbody');
+      const emptyMessage = document.getElementById('emptyMessage');
+      const ownerEmailEl = document.getElementById('ownerEmail');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      onAuthStateChanged(auth, user => {
+        if (!user) {
+          window.location.href = 'login.html';
+          return;
+        }
+        ownerEmailEl.textContent = user.email || '';
+      });
+
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          await signOut(auth);
+          window.location.href = 'login.html';
+        } catch (err) {
+          console.error('Sign out failed', err);
+          alert('Logout failed. Try again.');
+        }
+      });
+
+      try {
+        const q = query(collection(db, 'rideBookings'), orderBy('timestamp', 'desc'));
+
+        onSnapshot(q, snapshot => {
+          tableBody.innerHTML = '';
+          if (snapshot.empty) {
+            emptyMessage.style.display = 'block';
+            return;
+          } else {
+            emptyMessage.style.display = 'none';
+          }
+
+          let i = 1;
+          snapshot.forEach(doc => {
+            const b = doc.data();
+            const ts = b.timestamp && typeof b.timestamp.toDate === 'function'
+              ? b.timestamp.toDate().toLocaleString()
+              : (b.timestamp || '');
+            const row = document.createElement('tr');
+
+            // changed: include data-label attributes and value wrapper for responsive layout
+            row.innerHTML = `
+              <td data-label="#" style="padding:0.6rem 0.75rem; border-bottom:1px solid rgba(0,0,0,0.06);">${i++}</td>
+              <td data-label="Name" style="padding:0.6rem 0.75rem; border-bottom:1px solid rgba(0,0,0,0.06);"><span class="value">${escapeHtml(b.name || '')}</span></td>
+              <td data-label="Mobile" style="padding:0.6rem 0.75rem; border-bottom:1px solid rgba(0,0,0,0.06);"><span class="value">${escapeHtml(b.mobile || '')}</span></td>
+              <td data-label="Email" style="padding:0.6rem 0.75rem; border-bottom:1px solid rgba(0,0,0,0.06);"><span class="value">${escapeHtml(b.email || '')}</span></td>
+              <td data-label="Address" style="padding:0.6rem 0.75rem; border-bottom:1px solid rgba(0,0,0,0.06);"><span class="value">${escapeHtml(b.address || '')}</span></td>
+              <td data-label="Timestamp" style="padding:0.6rem 0.75rem; border-bottom:1px solid rgba(0,0,0,0.06);"><span class="value">${escapeHtml(ts)}</span></td>
+            `;
+            tableBody.appendChild(row);
+          });
+        }, err => {
+          console.error('Realtime listener error:', err);
+          alert('Could not load bookings. Check console for details.');
+        });
+      } catch (err) {
+        console.error(err);
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#39;');
+      }
+    });
+  </script>
+</body>
+</html>

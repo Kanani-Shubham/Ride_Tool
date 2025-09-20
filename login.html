@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Owner Login - Shreeji E-Bike</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+
+  <div class="container" style="min-height:100vh; display:flex; align-items:center; justify-content:center;">
+    <div class="booking-card" style="max-width:420px; width:100%;">
+        <!-- changed: back button top-left -->
+  <a href="index.html" class="back-btn" aria-label="Back to home" style="
+      position:fixed;
+      top:14px;
+      left:14px;
+      z-index:9999;
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      background:rgba(255,255,255,0.95);
+      color:#2e7d32;
+      padding:0.45rem 0.6rem;
+      border-radius:8px;
+      font-weight:600;
+      box-shadow:0 6px 18px rgba(0,0,0,0.12);
+      text-decoration:none;
+  ">
+    <!-- simple arrow + label -->
+    <span style="font-size:1rem; line-height:1;">←</span>
+    <span style="font-size:0.95rem;">Back</span>
+  </a>
+      <div class="card-header" style="text-align:center;">
+        <img src="logo.png" class="logo-icon" style="width:7rem; height:9rem; display:inline-block;"/>
+        <h2 style="margin-top:0.25rem;">Owner Login</h2>
+        <p style="color:#666; margin-top:0.25rem;">Sign in to view ride bookings</p>
+      </div>
+
+      <form id="loginForm" style="display:flex; flex-direction:column; gap:1rem;">
+        <input type="email" id="email" placeholder="Email" required style="padding:0.85rem; border-radius:10px; border:1px solid #e0e0e0;"/>
+        <input type="password" id="password" placeholder="Password" required style="padding:0.85rem; border-radius:10px; border:1px solid #e0e0e0;"/>
+        <button type="submit" class="submit-btn">Login</button>
+      </form>
+      <p style="text-align:center; color:#999; font-size:0.9rem; margin-top:1rem;">If you don't have access, contact the owner.</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUNQ46OKgx75Qu7h7fnQsiWXxobtYZE5A",
+      authDomain: "ride-tool.firebaseapp.com",
+      projectId: "ride-tool",
+      storageBucket: "ride-tool.firebasestorage.app",
+      messagingSenderId: "974218110192",
+      appId: "1:974218110192:web:c793fa2ba7323f21f14e35",
+      measurementId: "G-6H9E866HL8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, user => {
+      if (user) window.location.href = 'dashboard.html';
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.classList.add('loading');
+      btn.disabled = true;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        alert('Login failed: '+err.message);
+        console.error(err);
+      } finally {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

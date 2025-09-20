@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Ride - Shreeji E-Bike World</title>
+    <meta name="description" content="Book your eco-friendly e-bike ride with Shreeji E-Bike World. Easy online booking for sustainable transportation.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="background-pattern"></div>
+        
+        <header class="header">
+            <div class="logo">
+                <img src="logo.png" alt="Shreeji E-Bike World Logo" class="logo-icon">
+                <h1>Shreeji E-Bike World</h1>
+            </div>
+            <p class="tagline">Eco-Friendly Rides for a Greener Tomorrow</p>
+            
+            <!-- Hero E-bike Images -->
+            <div class="hero-bikes">
+                <div class="bike-showcase">
+                    <img src="bike3.png" alt="Pink E-bike Scooter" class="hero-bike hero-bike-1" >
+                    <img src="monster.png" alt="Orange E-bike" class="hero-bike hero-bike-2">
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="booking-card" id="bookingCard">
+                <div class="card-header">
+                    <h2>Book Your E-Bike Ride</h2>
+                    <p>Experience the future of sustainable transportation</p>
+                </div>
+
+                <form id="bookingForm" class="booking-form">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                        <div class="input-border"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number *</label>
+                        <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" required>
+                        <div class="input-border"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="input-border"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Pickup Address *</label>
+                        <textarea id="address" name="address" rows="3" required></textarea>
+                        <div class="input-border"></div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Book My Ride</span>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14"/>
+                            <path d="m12 5 7 7-7 7"/>
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- Owner login button (goes to login.html) -->
+                <div style="text-align:center; margin-top:1rem;">
+                    <a href="login.html" class="owner-login-link" style="
+                        display:inline-block;
+                        padding:0.6rem 1rem;
+                        background: linear-gradient(135deg,#4CAF50 0%, #45a049 100%);
+                        color:#fff;
+                        border-radius:10px;
+                        text-decoration:none;
+                        font-weight:600;
+                        box-shadow:0 6px 18px rgba(76,175,80,0.15);
+                    ">Owner Login</a>
+                </div>
+
+                <div id="thankYouMessage" class="thank-you-message hidden">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22,4 12,14.01 9,11.01"/>
+                        </svg>
+                    </div>
+                    <h3>Thank You!</h3>
+                    <p>Your ride booking has been received successfully. We will contact you shortly to confirm your booking and arrange pickup.</p>
+                    <button type="button" class="book-again-btn" onclick="resetForm()">Book Another Ride</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Shreeji E-Bike World. All rights reserved.</p>
+        </footer>
+    </div>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-analytics.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUNQ46OKgx75Qu7h7fnQsiWXxobtYZE5A",
+    authDomain: "ride-tool.firebaseapp.com",
+    projectId: "ride-tool",
+    storageBucket: "ride-tool.firebasestorage.app",
+    messagingSenderId: "974218110192",
+    appId: "1:974218110192:web:c793fa2ba7323f21f14e35",
+    measurementId: "G-6H9E866HL8"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+
+  // Booking form submission
+  const bookingForm = document.getElementById('bookingForm');
+  bookingForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = {
+      name: document.getElementById('fullName').value,
+      mobile: document.getElementById('mobile').value,
+      email: document.getElementById('email').value,
+      address: document.getElementById('address').value,
+      timestamp: serverTimestamp()
+    };
+
+    try {
+      await addDoc(collection(db, 'rideBookings'), data);
+      alert("Booking submitted successfully!");
+      bookingForm.reset();
+    } catch (err) {
+      console.error(err);
+      alert("Error submitting booking. Try again.");
+    }
+  });
+
+</script>
+    <script src="script.js"></script>
+</body>
+</html>

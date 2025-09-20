@@ -1,0 +1,746 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+.container {
+    min-height: 100vh;
+    position: relative;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 50%, #2e7d32 100%);
+    background-attachment: fixed;
+}
+
+.background-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.header {
+    text-align: center;
+    padding: 2rem 1rem 1rem;
+    position: relative;
+    z-index: 1;
+    animation: fadeInDown 1s ease-out;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.logo-icon {
+    width: 7rem;
+    height: 9rem;
+    color: white;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.header h1 {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tagline {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    font-weight: 300;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Hero E-bike Images */
+.hero-bikes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.bike-showcase {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: floatBikes 6s ease-in-out infinite;
+}
+
+.hero-bike {
+    width: 150px;
+    height: 120px;
+    object-fit: contain;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease;
+    filter: drop-shadow(0 5px 15px rgba(255, 255, 255, 0.2));
+}
+
+.hero-bike-1 {
+    animation: float1 4s ease-in-out infinite;
+    transform: rotate(-5deg);
+}
+
+.hero-bike-2 {
+    animation: float2 4s ease-in-out infinite 2s;
+    transform: rotate(5deg);
+}
+
+.hero-bike:hover {
+    transform: scale(1.1) rotate(0deg);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    filter: drop-shadow(0 8px 25px rgba(255, 255, 255, 0.3));
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.booking-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    animation: fadeInUp 1s ease-out 0.3s both;
+    margin-top: 1rem;
+    overflow: hidden;
+}
+
+.booking-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4CAF50, #45a049, #2e7d32);
+    border-radius: 20px 20px 0 0;
+}
+
+/* Add decorative bike icon to booking card */
+.booking-card::after {
+    content: '🛵';
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    width: 30px;
+    height: 30px;
+    background: white;
+    border-radius: 50%;
+    border: 3px solid #4CAF50;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: pulse 2s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    /* margin-top: 5%; */
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.card-header h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 0.5rem;
+}
+
+.card-header p {
+    color: #666;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    position: relative;
+    z-index: 1;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.input-border {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+    z-index: 2;
+    border-radius: 1px;
+}
+
+.form-group input:focus + .input-border,
+.form-group textarea:focus + .input-border {
+    width: 100%;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.submit-btn:hover::before {
+    left: 100%;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, #45a049 0%, #4CAF50 100%);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+    transform: translateY(-2px);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.btn-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.submit-btn:hover .btn-icon {
+    transform: translateX(3px);
+}
+
+.thank-you-message {
+    text-align: center;
+    animation: fadeInScale 0.6s ease-out;
+}
+
+.success-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1.5rem;
+    color: #4CAF50;
+    animation: bounceIn 0.8s ease-out 0.2s both;
+}
+
+.success-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.thank-you-message h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 1rem;
+}
+
+.thank-you-message p {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.book-again-btn {
+    background: transparent;
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.book-again-btn:hover {
+    background: #4CAF50;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.hidden {
+    display: none;
+}
+
+.footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Dashboard & Auth UI tweaks */
+.bookings-table thead th {
+    text-align: left;
+    padding: 0.75rem;
+    background: rgba(0,0,0,0.05);
+    color: #2e7d32;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.bookings-table tbody td {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.bookings-table tr:nth-child(even) {
+    background: rgba(0,0,0,0.02);
+}
+
+/* Card variant for dashboard (already using .booking-card) */
+.booking-card { overflow: hidden; }
+
+/* Auth card smaller and centered */
+.auth-card, .login-card {
+    max-width: 420px;
+    margin: 2rem auto;
+}
+
+/* Make logout button stand out on header */
+#logoutBtn {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.85);
+    color: white;
+    padding: 0.5rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight:600;
+}
+
+#logoutBtn:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+/* Responsive adjustments for dashboard/table */
+@media (max-width: 900px) {
+    /* tighter header */
+    .header { padding: 1rem; }
+
+    /* compact logo */
+    .logo { gap: 0.5rem; align-items: center; }
+    .logo-icon { width: 7rem; height: 9rem; }
+
+    /* stacked toolbar */
+    .dashboard-toolbar { display:flex; flex-direction:column; gap:0.5rem; align-items:center; justify-content:center; width:100%; }
+    #ownerEmail { font-size:0.95rem; color:rgba(255,255,255,0.95); }
+    #logoutBtn { width:100%; max-width:260px; }
+
+    /* convert table rows into card-like blocks */
+    .bookings-table thead { display: none; }
+    .bookings-table { width: 100%; }
+    .bookings-table tbody tr {
+        display: block;
+        background: rgba(255,255,255,0.98);
+        margin-bottom: 0.75rem;
+        border-radius: 12px;
+        padding: 0.6rem;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+
+    .bookings-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 0.35rem 0;
+        border-bottom: none;
+    }
+
+    .bookings-table tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #666;
+        margin-right: 0.5rem;
+        width: 38%;
+        max-width: 120px;
+        flex-shrink: 0;
+    }
+
+    .bookings-table tbody td .value {
+        width: 62%;
+        text-align: right;
+        word-break: break-word;
+        color: #333;
+        font-size: 0.95rem;
+    }
+
+    /* ensure numbering row looks small and neat */
+    .bookings-table tbody td[data-label="#"]::before { display: none; }
+    .bookings-table tbody td[data-label="#"] .value { text-align: left; font-weight:700; }
+
+    /* reduce padding in booking card for small screens */
+    .booking-card { padding: 1.25rem; border-radius: 14px; }
+    .card-header h2 { font-size: 1.2rem; }
+    .card-header p { font-size: 0.9rem; }
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* E-bike Animation Keyframes */
+@keyframes floatBikes {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes float1 {
+    0%, 100% {
+        transform: rotate(-5deg) translateY(0px);
+    }
+    50% {
+        transform: rotate(-5deg) translateY(-8px);
+    }
+}
+
+@keyframes float2 {
+    0%, 100% {
+        transform: rotate(5deg) translateY(0px);
+    }
+    50% {
+        transform: rotate(5deg) translateY(-12px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .logo {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .logo-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    
+    .hero-bikes {
+        height: 150px;
+        margin-top: 1.5rem;
+    }
+    
+    .bike-showcase {
+        gap: 2rem;
+    }
+    
+    .hero-bike {
+        width: 120px;
+        height: 95px;
+    }
+    
+    .booking-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+        border-radius: 16px;
+    }
+    
+    .card-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+    
+    .submit-btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .tagline {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        background-attachment: scroll;
+    }
+    
+    .header {
+        padding: 1.5rem 1rem 0.5rem;
+    }
+    
+    .hero-bikes {
+        height: 120px;
+        margin-top: 1rem;
+    }
+    
+    .bike-showcase {
+        gap: 1.5rem;
+        flex-direction: row;
+    }
+    
+    .hero-bike {
+        width: 100px;
+        height: 80px;
+    }
+    
+    .main-content {
+        padding: 1rem;
+    }
+    
+    .booking-card {
+        padding: 1.5rem 1rem;
+    }
+    
+    .booking-card::after {
+        width: 25px;
+        height: 25px;
+        right: 20px;
+        top: -12px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .card-header h2 {
+        font-size: 1.4rem;
+    }
+    
+    .thank-you-message h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Responsive tweak: make logo display perfectly at width ≤ 780px or height ≤ 669px */
+@media (max-width: 780px){
+    .logo {
+        gap: 0.5rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-content: flex-end;
+        
+    }
+
+    /* Reduce logo icon size so it fits well in smaller viewports */
+    .logo-icon {
+        width: 3.5rem;
+        height: 3.5rem;
+        max-width: 40%;
+        object-fit: contain;
+    }
+
+    /* Adjust heading and tagline for better balance with the smaller logo */
+    .header h1 {
+        font-size: 1.6rem;
+        line-height: 1.2;
+    }
+
+    .tagline {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Ensure hero and header spacing stays compact */
+    .header {
+        padding: 1.25rem 1rem 0.75rem;
+    }
+
+    .hero-bikes {
+        height: 140px;
+        margin-top: 0.75rem;
+    }
+}
+
+/* Loading state for form submission */
+.submit-btn.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.submit-btn.loading .btn-text {
+    opacity: 0.7;
+}
+
+.submit-btn.loading::after {
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 0.5rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
